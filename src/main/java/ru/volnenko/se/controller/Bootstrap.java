@@ -3,7 +3,6 @@ package ru.volnenko.se.controller;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import ru.volnenko.se.api.repository.IProjectRepository;
 import ru.volnenko.se.api.repository.ITaskRepository;
