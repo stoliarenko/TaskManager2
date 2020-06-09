@@ -2,6 +2,8 @@ package ru.volnenko.se.controller;
 
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import ru.volnenko.se.api.repository.IProjectRepository;
 import ru.volnenko.se.api.repository.ITaskRepository;
@@ -10,12 +12,15 @@ import ru.volnenko.se.api.service.IProjectService;
 import ru.volnenko.se.api.service.ITaskService;
 import ru.volnenko.se.api.service.ServiceLocator;
 import ru.volnenko.se.command.AbstractCommand;
+import ru.volnenko.se.entity.CommandEnteredEvent;
 
 import java.util.*;
 
 @Component
 @Setter(onMethod_ = {@Autowired})
 public final class Bootstrap implements ServiceLocator {
+
+    private ApplicationEventPublisher publisher;
 
     private ITaskRepository taskRepository;
 
@@ -63,15 +68,8 @@ public final class Bootstrap implements ServiceLocator {
         String command = "";
         while (!"exit".equals(command)) {
             command = scanner.nextLine();
-            execute(command);
+            publisher.publishEvent(new CommandEnteredEvent(this, command));
         }
-    }
-
-    private void execute(final String command) throws Exception {
-        if (command == null || command.isEmpty()) return;
-        final AbstractCommand abstractCommand = commands.get(command);
-        if (abstractCommand == null) return;
-        abstractCommand.execute();
     }
 
     public List<AbstractCommand> getListCommand() {
