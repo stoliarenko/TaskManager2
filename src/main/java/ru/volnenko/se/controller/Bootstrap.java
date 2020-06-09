@@ -68,17 +68,8 @@ public final class Bootstrap implements ServiceLocator {
         String command = "";
         while (!"exit".equals(command)) {
             command = scanner.nextLine();
-            publisher.publishEvent(new CommandEnteredEvent(command));
+            publisher.publishEvent(new CommandEnteredEvent(this, command));
         }
-    }
-
-    @EventListener
-    private void execute(CommandEnteredEvent event) throws Exception {
-        final String command = event.getName();
-        if (command == null || command.isEmpty()) return;
-        final AbstractCommand abstractCommand = commands.get(command);
-        if (abstractCommand == null) return;
-        abstractCommand.execute();
     }
 
     public List<AbstractCommand> getListCommand() {

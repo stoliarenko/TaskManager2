@@ -1,12 +1,16 @@
 package ru.volnenko.se.entity;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEvent;
 
 @Getter
-@RequiredArgsConstructor
-public class CommandEnteredEvent {
+public class CommandEnteredEvent extends ApplicationEvent {
 
     private final String name;
+
+    public CommandEnteredEvent(Object source, String name) {
+        super(source);
+        this.name = name;
+    }
 
 }
